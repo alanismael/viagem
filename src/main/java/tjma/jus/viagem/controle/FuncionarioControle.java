@@ -25,7 +25,7 @@ public class FuncionarioControle {
     }
 
     @PostMapping
-    public ResponseEntity<Funcionario> cria(@RequestBody Funcionario funcionario, HttpServletResponse response) {
+    public ResponseEntity<Funcionario> salvar(@Validated @RequestBody Funcionario funcionario, HttpServletResponse response) {
         Funcionario funcionarioSalvo = funcionarioServico.salva(funcionario);
 
         URI uri = ServletUriComponentsBuilder
@@ -36,53 +36,9 @@ public class FuncionarioControle {
         //response.setHeader("Location", uri.toString());
         return  ResponseEntity.created(uri).body(funcionarioSalvo);
     }
-    /*
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Categoria cria(@RequestBody Funcionario funcionario, HttpServletResponse response) {
-        Funcionario funcionarioSalvo = funcionarioServico.salva(funcionario);
 
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequestUri()
-                .path("/{id}")
-                .buildAndExpand(funcionarioSalvo.getCodigo())
-                .toUri();
-
-        response.setHeader("Location", uri.toString() );
-        return funcionarioSalvo;
-    }
-    */
-    /*
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void cria(@RequestBody Funcionario funcionario, HttpServletResponse response) {
-        Funcionario funcionarioSalvo = funcionarioServico.salva(funcionario);
-
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequestUri()
-                .path("/{id}")
-                .buildAndExpand(categoriaSalva.getId())
-                .toUri();
-
-        response.setHeader("Location", uri.toString() );
-    }
-    */
-    /*
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void cria(@RequestBody Funcionario funcionario) {
-        funcionarioServico.salva(funcionario);
-    }
-    */
-    /*
-    @PostMapping
-    public void cria(@RequestBody Funcionario funcionario) {
-        funcionarioServico.salva(funcionario);
-    }
-
-    */
     @GetMapping
-    public ResponseEntity<?> listaFuncionarios() {
+    public ResponseEntity<?> buscaTodos() {
         List<Funcionario> funcionarios = funcionarioServico.obterTodosFuncionarios();
 
         if (funcionarios.isEmpty()) {
@@ -105,7 +61,7 @@ public class FuncionarioControle {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Funcionario> atualizar(@PathVariable Integer id,
+    public ResponseEntity<Funcionario> alterar(@PathVariable Integer id,
                                                @Validated @RequestBody Funcionario funcionario) {
 
         Funcionario funcionarioManager = funcionarioServico.atualiza(id, funcionario);

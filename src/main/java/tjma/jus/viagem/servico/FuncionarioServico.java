@@ -50,7 +50,7 @@ public class FuncionarioServico {
         if (funcionarioManager == null) {
             throw new EmptyResultDataAccessException(1);
         }
-        BeanUtils.copyProperties(funcionario, funcionarioManager, "id" );
+        BeanUtils.copyProperties(funcionario, funcionarioManager, "codigo" );
         this.salva(funcionarioManager);
         return funcionarioManager;
     }
