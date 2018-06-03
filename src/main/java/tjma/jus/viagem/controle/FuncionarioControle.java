@@ -26,7 +26,7 @@ public class FuncionarioControle {
 
     @PostMapping
     public ResponseEntity<Funcionario> salvar(@Validated @RequestBody Funcionario funcionario, HttpServletResponse response) {
-        Funcionario funcionarioSalvo = funcionarioServico.salva(funcionario);
+        Funcionario funcionarioSalvo = funcionarioServico.salvar(funcionario);
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()
@@ -39,7 +39,7 @@ public class FuncionarioControle {
 
     @GetMapping
     public ResponseEntity<?> buscaTodos() {
-        List<Funcionario> funcionarios = funcionarioServico.obterTodosFuncionarios();
+        List<Funcionario> funcionarios = funcionarioServico.buscaTodos();
 
         if (funcionarios.isEmpty()) {
             //return ResponseEntity.notFound().build();
@@ -57,14 +57,14 @@ public class FuncionarioControle {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public @ResponseBody void excluir(@PathVariable Integer id) {
-        funcionarioServico.excluir(id );
+        funcionarioServico.excluir(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Funcionario> alterar(@PathVariable Integer id,
+    public ResponseEntity<Funcionario> atualizar(@PathVariable Integer id,
                                                @Validated @RequestBody Funcionario funcionario) {
 
-        Funcionario funcionarioManager = funcionarioServico.atualiza(id, funcionario);
+        Funcionario funcionarioManager = funcionarioServico.atualizar(id, funcionario);
         return ResponseEntity.ok(funcionarioManager);
     }
 }

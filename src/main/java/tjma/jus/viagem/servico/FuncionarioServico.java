@@ -14,10 +14,12 @@ import java.util.Optional;
 @Service
 public class FuncionarioServico {
     private final FuncionarioRepositorio funcionarioRepositorio;
+    private final GenericoServico<Funcionario> genericoServico;
 
     @Autowired
     public FuncionarioServico(FuncionarioRepositorio funcionarioRepositorio) {
         this.funcionarioRepositorio = funcionarioRepositorio;
+        this.genericoServico = new GenericoServico<Funcionario>(funcionarioRepositorio);
     }
 
     Optional<Funcionario> buscaPor(String nome) {
@@ -25,33 +27,34 @@ public class FuncionarioServico {
     }
 
     public Funcionario buscaPor(Integer codigo) {
-        Optional<Funcionario> optionalFuncionario = funcionarioRepositorio.findById(codigo);
-        return optionalFuncionario.orElse(null);
+        return this.genericoServico.buscaPor(codigo);
     }
 
     @Transactional
-    public Funcionario salva(Funcionario funcionario) {
-        return this.funcionarioRepositorio.save(funcionario);
+    public Funcionario salvar(Funcionario funcionario) {
+        return this.genericoServico.salvar(funcionario);
     }
 
     @Transactional(readOnly = true)
-    public List<Funcionario> obterTodosFuncionarios() {
-        return funcionarioRepositorio.findAll();
+    public List<Funcionario> buscaTodos() {
+        return this.genericoServico.buscaTodos();
     }
 
     @Transactional
-    public void excluir(Integer id) {
-        funcionarioRepositorio.deleteById(id);
+    public void excluir(Integer codigo) {
+        this.genericoServico.excluir(codigo);
     }
-
+/*
     @Transactional
-    public Funcionario atualiza(Integer id, Funcionario funcionario) {
-        Funcionario funcionarioManager = this.buscaPor(id);
-        if (funcionarioManager == null) {
-            throw new EmptyResultDataAccessException(1);
-        }
-        BeanUtils.copyProperties(funcionario, funcionarioManager, "codigo" );
-        this.salva(funcionarioManager);
-        return funcionarioManager;
+    public Funcionario atualizar(Integer codigo, Funcionario funcionario) {
+        Funcionario funcionarioDoBanco = this.buscaPor(codigo);
+        BeanUtils.copyProperties(funcionario, funcionarioDoBanco, "codigo" );
+        this.salvar(funcionarioDoBanco);
+        return funcionarioDoBanco;
+    }
+*/
+    @Transactional
+    public Funcionario atualizar(Integer codigo, Funcionario funcionario) {
+        return this.genericoServico.atualizar(funcionario, codigo);
     }
 }
