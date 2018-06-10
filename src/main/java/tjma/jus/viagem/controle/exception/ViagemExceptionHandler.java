@@ -72,7 +72,7 @@ public class ViagemExceptionHandler extends ResponseEntityExceptionHandler {
 
         bindingResult.getFieldErrors().forEach(fieldError -> {
                     String mensagem = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
-                    erros.add(new Erro(mensagem ,fieldError.toString() ) );
+                    erros.add(new Erro(mensagem ,fieldError.toString()));
                 }
         );
         return erros;
