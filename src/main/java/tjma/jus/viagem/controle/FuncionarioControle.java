@@ -2,6 +2,8 @@ package tjma.jus.viagem.controle;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tjma.jus.viagem.controle.event.RecursoCriadoEvent;
 import tjma.jus.viagem.modelo.Funcionario;
+import tjma.jus.viagem.repositorio.filtro.FuncionarioFiltro;
 import tjma.jus.viagem.servico.FuncionarioServico;
 
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +28,26 @@ public class FuncionarioControle {
     @Autowired
     public FuncionarioControle(FuncionarioServico funcionarioServico) {
         this.funcionarioServico = funcionarioServico;
+    }
+
+    @GetMapping("/todos")
+    public Page<Funcionario> todosFuncionarios(Pageable pageable) {
+        return funcionarioServico.buscaPaginada(pageable);
+    }
+
+    @GetMapping
+    public List<Funcionario> pesquisar(FuncionarioFiltro filtro) {
+        return funcionarioServico.pesquisa(filtro);
+    }
+
+    @GetMapping("/paginacao")
+    public Page<Funcionario> pesquisarComPaginacao(FuncionarioFiltro filtro, Pageable pageable) {
+        return funcionarioServico.pesquisa(filtro, pageable);
+    }
+
+    @GetMapping("/buscapornome")
+    public List<Funcionario> buscaPeloNome(@RequestParam String nome) {
+        return funcionarioServico.buscaPor(nome);
     }
     /*
     @PostMapping
@@ -48,7 +71,7 @@ public class FuncionarioControle {
 
         return  ResponseEntity.status(HttpStatus.CREATED).body(funcionarioSalvo);
     }
-
+/*
     @GetMapping
     public ResponseEntity<?> buscaTodos() {
         List<Funcionario> funcionarios = funcionarioServico.buscaTodos();
@@ -60,7 +83,7 @@ public class FuncionarioControle {
             return ResponseEntity.ok(funcionarios);
         }
     }
-
+*/
     @GetMapping("/{id}")
     public Funcionario buscaPor(@PathVariable Integer id) {
         return funcionarioServico.buscaPor(id);

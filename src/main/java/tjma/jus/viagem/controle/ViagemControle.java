@@ -13,6 +13,8 @@ import tjma.jus.viagem.servico.ViagemServico;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+@RestController
+@RequestMapping("/api/viagem")
 public class ViagemControle {
     @Autowired
     private ApplicationEventPublisher publicar;
